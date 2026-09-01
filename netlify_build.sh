@@ -39,6 +39,8 @@ mv "$tmp_run_js" deploy/untrusted/run.js
 # Redirect (not rewrite) so the browser URL actually changes to
 # /untrusted/run.html and run.html's relative asset paths (../lib, ../css,
 # ../package) resolve correctly.
-echo "/  /untrusted/run.html  301" > deploy/_redirects
+# The trailing "!" is the force flag: without it Netlify serves the static
+# deploy/index.html stub at "/" instead of applying this rule.
+echo "/  /untrusted/run.html  301!" > deploy/_redirects
 
 echo "=== Build complete! ==="
