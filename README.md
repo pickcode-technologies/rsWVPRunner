@@ -16,3 +16,11 @@ Copy individual files to cloud storage, e.g.,
 
  gsutil cp package/glow.3.2.min.js gs://rswvprunner/rsWVPRunner/package/glow.3.2.min.js
 
+## Test harness
+
+A local test page is in `test/index.html`. It embeds the runner in an iframe and lets you send programs via `postMessage`, the same way a host application would. With `./serve.sh` running (serving the runner on port 8090, trusted host `http://localhost:8080` by default), open a second terminal and run:
+
+    npx serve test -p 8080
+
+Then visit `http://localhost:8080` and click **▶ Run**. The "Runner URL" field defaults to `http://localhost:8090/untrusted/run.html`, matching `serve.sh`'s default port and trusted host.
+

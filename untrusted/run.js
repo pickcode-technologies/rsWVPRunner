@@ -199,6 +199,13 @@ function ideRun() {
             }
 
             if (message.program !== undefined) {
+                // Hosts that only ever run VPython (and don't offer a JS/RapydScript
+                // mode toggle) may omit `lang`. Without it, the compiler defaults to
+                // classic GlowScript's JavaScript-flavored parser, which fails on
+                // Python syntax (e.g. '#' comments, 'def'). Default to vpython here
+                // since that's the only dialect this deployment's host ever sends.
+                if (message.lang === undefined) message.lang = 'vpython'
+
                 // Determine the set of libraries to load
                 var progver = message.version.substr(0,3) // 'unp' if unpackaged
                 var packages = []

@@ -1,0 +1,8 @@
+[build]
+  command = "./netlify_build.sh"
+  publish = "deploy"
+
+# TRUSTED_HOST is intentionally not set here — configure it as a Netlify
+# site environment variable (Site settings -> Environment variables) so
+# the allowed embedding origins can change without a code change.
+# Example value: http://localhost:5173,https://dev.pickcode.io,https://app.pickcode.io
