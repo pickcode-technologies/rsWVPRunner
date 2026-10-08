@@ -12,3 +12,9 @@ svc_acct_cred.json
 /build.env
 config.json
 /build-tools/
+/node_modules/
+# Built from lib/ by `npm run build` (see scripts/build-packages.mjs); older versions stay committed
+/package/glow.3.2.min.js
+/package/compiler.3.2.min.js
+/package/RScompiler.3.2.min.js
+/package/RSrun.3.2.min.js
