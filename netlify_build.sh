@@ -11,6 +11,11 @@ TRUSTED_HOST=${TRUSTED_HOST:?"TRUSTED_HOST must be set (e.g. https://app.pickcod
 echo "=== Building rsWVPRunner for Netlify ==="
 echo "Trusted host: $TRUSTED_HOST"
 
+# Build package/*.3.2.min.js from lib/ and run the compiler tests (npm test
+# builds first). Netlify runs `npm install` itself because package.json exists.
+# Older package versions are committed, prebuilt blobs and are copied as-is.
+npm test
+
 # Assemble deploy/ from ONLY the assets the runner serves in production.
 rm -rf deploy
 mkdir -p deploy/untrusted
