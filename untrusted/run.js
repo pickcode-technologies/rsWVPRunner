@@ -53,12 +53,27 @@ window.glowscript_libraries = { // used for unpackaged (X.Ydev) version
 } 
 
 var trusted_origin = "*"
-    
+var suppress_print_post = false // set while echoing errors into the print area
+
 function send(msg) {
+    // print() in api_misc.js forwards its output to the host as "glowscript.print";
+    // don't forward error text echoed by showInConsole, since the host also gets it as {error, traceback}
+    if (suppress_print_post && msg["glowscript.print"] !== undefined) return
     msg = JSON.stringify(msg)
     // trusted_origin is "*" the first time send is used; "https://www."+website+".org" thereafter
     // The first send operation is just to make the link with ide.js, which may be glowscript.org or www.glowscript.org
     window.parent.postMessage(msg, trusted_origin)
+}
+
+function showInConsole(text) { // echo text into the runner's print area (the GlowScript print() textarea)
+    if (typeof GSprint !== 'function') return
+    suppress_print_post = true
+    try {
+        GSprint(text, {end: ''})
+    } catch (ignore) {
+    } finally {
+        suppress_print_post = false
+    }
 }
 
 function reportScriptError(err) { // This machinery only gives trace information on Chrome
@@ -161,6 +176,7 @@ function reportScriptError(err) { // This machinery only gives trace information
         for (var i= 0; i<traceback.length; i++) out += traceback[i] + '\n'
         send({ error: feedback, traceback: out})
     }
+    showInConsole(feedback + out)
 
 } // end of reportScriptError
 
@@ -282,6 +298,9 @@ function ideRun() {
             }
         } catch(err) {
             send({ error: err.toString(), traceback: ''})
+            $("#loading").remove()
+            window.__context = { glowscript_container: container } // print() needs a context
+            showInConsole(err.toString() + '\n')
             return
         }
         $("#loading").remove() // remove the 'Loading program...' message, establish the window context
