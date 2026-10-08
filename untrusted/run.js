@@ -289,7 +289,6 @@ function ideRun() {
     var ver
 
     async function compileAndRun(program, container, lang, version) {
-        if (program[0] == '\n') program = program.substr(1) // There can be a spurious '\n' at the start of the program source
         var options = {lang: lang, version: version, run: true}
         try { // compile the user program:
             program = glowscript_compile(program, options)
